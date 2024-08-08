@@ -1,1 +1,1 @@
-sikeresume.streamlit.app/
+https://sikeresume.streamlit.app/
