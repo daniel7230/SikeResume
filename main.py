@@ -46,22 +46,13 @@ def get_conversation_chain(vectorstore):
     return conversation_chain
 
 
-def handle_user_input(job_description, vectorstore):
-    # Reinitialize the conversation chain for a fresh start
-    conversation_chain = get_conversation_chain(vectorstore)
-
-    # Retrieve relevant chunks from the vectorstore based on the job description
-    relevant_chunks = vectorstore.similarity_search(job_description, k=5)
-
-    # Combine the relevant chunks into a single text block
-    retrieved_text = "\n\n".join([chunk.page_content for chunk in relevant_chunks])
+def handle_user_input(job_description):
+    # Retrieve the conversation chain from the session state
+    conversation_chain = st.session_state.conversation_chain
 
     prompt = f"""
-    Given the following relevant sections from the resume and the job description, suggest specific content changes to the resume to better match the job requirements. 
+    Given the relevant sections from the resume and the job description, suggest specific content changes to the resume to better match the job requirements. 
     Focus only on modifying, adding, or removing content to align with the job description. Do not suggest formatting changes.
-
-    Relevant Resume Sections:
-    {retrieved_text}
 
     Job Description:
     {job_description}
@@ -93,6 +84,7 @@ def handle_user_input(job_description, vectorstore):
     Also, mention the reason why adding each project would benefit me.
     """
 
+    # Pass the prompt to the conversation chain (which handles retrieval internally)
     response = conversation_chain.invoke({
         'question': prompt
     })
@@ -111,9 +103,8 @@ def main():
     langchain.debug = False
     st.set_page_config(page_title="SikeResume", page_icon=":ghost:")
 
-    # Initialize session state variables if they don't exist
-    # if "conversation" not in st.session_state:
-    #     st.session_state.conversation = None
+    if "conversation_chain" not in st.session_state:
+        st.session_state.conversation_chain = None
 
     if "vectorstore" not in st.session_state:
          st.session_state.vectorstore = None
@@ -150,7 +141,7 @@ def main():
                     st.session_state.resume_text = raw_text
                     text_chunks = get_text_chunks(raw_text)
                     st.session_state.vectorstore = get_vectorstore(text_chunks)
-                    # st.session_state.conversation = get_conversation_chain(vectorstore)
+                    st.session_state.conversation_chain = get_conversation_chain(st.session_state.vectorstore)
                 st.success("Processing complete!")
             else:
                 st.warning("Please upload a resume before processing.")
@@ -172,7 +163,7 @@ def main():
         if st.session_state.resume_text is None or st.session_state.resume_text == "":
             st.warning("Please upload and process a resume before submitting a job description.")
         elif job_description.strip() != "":
-            handle_user_input(job_description, st.session_state.vectorstore)
+            handle_user_input(job_description)
         else:
             st.warning("Please paste the job description and then submit.")
 
