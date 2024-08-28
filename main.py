@@ -8,6 +8,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langsmith import traceable
 
 
 
@@ -47,7 +48,7 @@ def get_conversation_chain(vectorstore):
     return conversation_chain
 
 
-
+@traceable
 def handle_user_input(job_description):
 
     # Clear the conversation memory before new run
