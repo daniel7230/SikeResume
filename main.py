@@ -10,6 +10,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 
+
 def get_pdf_text(pdf_file):
     text = ""
     pdf_reader = PdfReader(pdf_file)
@@ -46,7 +47,12 @@ def get_conversation_chain(vectorstore):
     return conversation_chain
 
 
+
 def handle_user_input(job_description):
+
+    # Clear the conversation memory before new run
+    st.session_state.conversation_chain.memory.clear()
+
     # Retrieve the conversation chain from the session state
     conversation_chain = st.session_state.conversation_chain
 
@@ -57,7 +63,7 @@ def handle_user_input(job_description):
     Job Description:
     {job_description}
 
-    Please provide your suggestions using the following HTML and Markdown format:
+    Please provide your suggestions using the following HTML and Markdown format only:
 
     <h2>Suggested Change 1 : [Brief explanation about the change]</h2>
     <ul>
@@ -155,7 +161,7 @@ def main():
     job_description = st.text_area(
         "Job Description:",
         height=200,
-        value=st.session_state.get("job_description", ""),
+        value=st.session_state.job_description,
         key="job_description"
     )
 
