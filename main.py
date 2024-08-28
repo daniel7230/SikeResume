@@ -58,11 +58,20 @@ def handle_user_input(job_description):
     conversation_chain = st.session_state.conversation_chain
 
     prompt = f"""
-    Given the relevant sections from the resume and the job description, suggest specific content changes to the resume to better match the job requirements. 
-    Focus only on modifying, adding, or removing content to align with the job description. Do not suggest formatting changes.
-
     Job Description:
     {job_description}
+    
+    Given the relevant sections from the resume and the job description, please provide detailed feedback to optimize the resume for the job description. Your response should include the following:
+
+    Section 1. **Extracted Top Keywords**: Identify and list the top keywords from the job description that are relevant to the role.
+
+   
+    Suggest specific content changes to the resume to better match the job requirements and improve compatibility with Applicant Tracking Systems (ATS). Focus on incorporating missing keywords and enhancing the alignment with the job description. Do not suggest formatting changes.
+
+
+    Section 2. **Suggested Changes** 
+    
+    Suggest specific content changes to the resume to better match the job requirements and improve compatibility with Applicant Tracking Systems (ATS). Focus on incorporating missing keywords and enhancing the alignment with the job description. Do not suggest formatting changes.
 
     Please provide your suggestions using the following HTML and Markdown format only:
 
@@ -85,7 +94,9 @@ def handle_user_input(job_description):
     Remember to focus solely on content changes that make the resume more relevant to the specific job description.
     Use the HTML color tags as shown above to format your suggestions.
 
-    And also return an 'Additional Projects' section. This should consist of 3 possible projects that can be added on the resume which uses the skills from both the original resume and the job description. Quantify the results.
+    Section 3. ** Additional Projects **
+    
+    This section should consist of 3 possible projects that can be added on the resume which uses the skills from both the original resume and the job description. Quantify the results.
     The projects should be of some real-world use case. Do not generate generic project names and descriptions. Be creative.
     Give this in the same format as the projects in the original resume. I should be able to just copy and paste it directly on the resume.
     Also, mention the reason why adding each project would benefit me.
