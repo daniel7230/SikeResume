@@ -63,7 +63,7 @@ def handle_user_input(job_description):
     
     Given the relevant sections from the resume and the job description, please provide detailed feedback to optimize the resume for the job description. Your response should include the following:
 
-    Section 1. **Extracted Top Keywords**: Identify and list the top keywords from the job description that are relevant to the role.
+    Section 1. **Top Keywords From JD**: Identify and list the top keywords from the job description that are relevant to the role.
 
    
     Suggest specific content changes to the resume to better match the job requirements and improve compatibility with Applicant Tracking Systems (ATS). Focus on incorporating missing keywords and enhancing the alignment with the job description. Do not suggest formatting changes.
