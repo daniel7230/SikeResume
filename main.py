@@ -9,6 +9,9 @@ from langchain_community.vectorstores import FAISS
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langsmith import traceable
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 
@@ -160,7 +163,9 @@ def main():
                     text_chunks = get_text_chunks(raw_text)
                     st.session_state.vectorstore = get_vectorstore(text_chunks)
                     st.session_state.conversation_chain = get_conversation_chain(st.session_state.vectorstore)
+                logging.info(f"Processed {st.session_state.uploaded_file.name}")
                 st.success("Processing complete!")
+
             else:
                 st.warning("Please upload a resume before processing.")
 
